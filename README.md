@@ -3,18 +3,22 @@
 
 
 
-**usage for each target:**
+**usage:**
 
 ```
 git -clone https://github.com/webmessia-h/tcpClientServerGUI/tree/main
 
 cd tcpClientServerGUI
 
-cd client/serverGUI
+cd  clientGUI 
+#and ./serverGUIApp 
 
 cmake -B build
 
 cd build
 
 make all
+
+./clientGUIApp 
+#and ./serverGUIApp 
 ```
