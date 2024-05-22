@@ -14,7 +14,8 @@ git -clone https://github.com/webmessia-h/tcpClientServerGUI/tree/main
 
 cd tcpClientServerGUI
 
-#for each target e.g. from here all steps must be done for server too
+# for each target e.g. from here all steps
+# must be done for server too
 
 cd  clientGUI  
 
