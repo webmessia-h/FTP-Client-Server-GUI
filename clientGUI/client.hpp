@@ -19,7 +19,7 @@ class Client : public QObject
     // is connected
     Q_PROPERTY(bool connected READ isConnected WRITE setIsConnected NOTIFY isConnectedChanged)
     // progress-bar property
-    Q_PROPERTY(int progress READ progress WRITE setProgress NOTIFY progressChanged)
+    Q_PROPERTY(float progress READ progress WRITE setProgress NOTIFY progressChanged)
     // all good
     Q_PROPERTY(bool transferSuccess READ success WRITE setSuccess NOTIFY transferSuccess)
 
@@ -33,7 +33,7 @@ public slots:
     void handle_request();
     void setIsChosen(bool newFileChosen);
 
-    void setProgress(int newProgress);
+    void setProgress(float newProgress);
     void setSuccess(bool newTransferSuccess);
 
 signals:
@@ -45,7 +45,7 @@ signals:
     void folder_selected();
     void fileChosen();
 
-    void progressChanged(int progress);
+    void progressChanged(float progress);
 
     void transferSuccess();
 
@@ -66,7 +66,7 @@ public:
 
     int get_new_port();
 
-    int progress() const;
+    float progress() const;
 
     bool success() const;
 
@@ -81,6 +81,6 @@ private:
     bool m_connected = false;
     std::string base_directory;
     bool m_fileChosen = false;
-    int m_progress = 0;
+    float m_progress = 0.0;
     bool m_transferSuccess = false;
 };

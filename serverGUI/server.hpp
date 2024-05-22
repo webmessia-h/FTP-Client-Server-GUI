@@ -26,7 +26,7 @@ class Server : public QObject
     // custom file-list model as data isn't present at instantiation
     Q_PROPERTY(FileListModel *fileListModel READ fileListModel CONSTANT)
     // progress-bar property
-    Q_PROPERTY(int progress READ progress WRITE setProgress NOTIFY progressChanged)
+    Q_PROPERTY(float progress READ progress WRITE setProgress NOTIFY progressChanged)
     // all good
     Q_PROPERTY(bool transferSuccess READ success WRITE setSuccess NOTIFY transferSuccess)
 
@@ -50,7 +50,7 @@ public slots:
 
     // Receive file
     bool receive_file(const QString &Qfilename);
-    void setProgress(int newProgress);
+    void setProgress(float newProgress);
     void setSuccess(bool newTransferSuccess);
 
 signals:
@@ -88,7 +88,7 @@ public:
     /*bool isChosen() const;
     void setIsChosen(bool newFileChosen);*/
 
-    int progress() const;
+    float progress() const;
 
     bool success() const;
 
@@ -106,6 +106,6 @@ private:
     QStringList m_fileList;
     FileListModel *m_fileListModel;
     bool m_file_chosen = false;
-    int m_progress = 0;
+    float m_progress = 0.0;
     bool m_transferSuccess = false;
 };

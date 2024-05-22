@@ -117,7 +117,7 @@ bool Server::request_upload(const QString &fname, const QString &Qfilename)
     }
     std::cout << "Requested upload of a " << filename << " on a port "
               << ntohs(server_addr.sin_port) << std::endl;
-    // New thread
+    // New thread for upload
     threadPool->enqueue([this, Qfilename]() { receive_file(Qfilename); });
     return true;
 }
@@ -188,10 +188,11 @@ bool Server::receive_file(const QString &Qfilename)
                 percentage = static_cast<int>(static_cast<double>(total_bytes_received) * 100.0
                                               / file_size);
                 // Update progress bar
+                float progbar = static_cast<float>(percentage / 100.0);
                 QMetaObject::invokeMethod(this,
                                           "setProgress",
                                           Qt::QueuedConnection,
-                                          Q_ARG(int, percentage));
+                                          Q_ARG(float, float(progbar)));
 
                 // Send ACK for start of the upload
                 if (Network::send_data(this->communication_sockfd, ACK, sizeof(ACK)) == -1) {
@@ -234,7 +235,7 @@ bool Server::receive_file(const QString &Qfilename)
                 }
             }
 
-            QMetaObject::invokeMethod(this, "setProgress", Qt::QueuedConnection, Q_ARG(int, 100));
+            QMetaObject::invokeMethod(this, "setProgress", Qt::QueuedConnection, Q_ARG(float, 1));
             QMetaObject::invokeMethod(this, "transferSuccess", Qt::QueuedConnection);
 
         } catch (const std::exception &ex) {
@@ -295,11 +296,11 @@ FileListModel *Server::fileListModel() const
     return m_fileListModel;
 }
 
-int Server::progress() const
+float Server::progress() const
 {
     return m_progress;
 }
-void Server::setProgress(int newProgress)
+void Server::setProgress(float newProgress)
 {
     if (m_progress == newProgress)
         return;

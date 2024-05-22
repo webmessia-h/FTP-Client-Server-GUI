@@ -23,7 +23,7 @@ Rectangle {
             from: 0.0
             to: 1.0
             visible: Backend.progress > 0 && Backend.progress < 100
-            value: Backend.progress / 100.0
+            value: (Backend.progress / 100.0)
         }
     Text {
             id: progressText
@@ -31,7 +31,7 @@ Rectangle {
             anchors.top: progressBar.bottom
             anchors.topMargin: 10
             visible: progressBar.visible
-            text: qsTr("Progress: %1%").arg(Backend.progress)
+            text: qsTr("Progress: %1%").arg(Backend.progress * 100.0)
             font.pointSize: 14
             color: "#1e293b"
         }

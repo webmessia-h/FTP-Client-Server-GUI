@@ -95,10 +95,11 @@ void Client::send_file(const file_info &FILE)
             int percentage = static_cast<int>(static_cast<double>(total_bytes_sent) * 100.0
                                               / FILE.file_size);
             // Update progress bar
+            float progbar = static_cast<float>(percentage / 100.0);
             QMetaObject::invokeMethod(this,
                                       "setProgress",
                                       Qt::QueuedConnection,
-                                      Q_ARG(int, percentage));
+                                      Q_ARG(float, progbar));
             // Receive ACK or CHPROT from server
             char msg[4] = {0};
             if (Network::receive_data(this->client_sockfd, msg, sizeof(msg)) == -1) {
@@ -131,7 +132,7 @@ void Client::send_file(const file_info &FILE)
             }
         }
         // Set progress 100 as transferred
-        QMetaObject::invokeMethod(this, "setProgress", Qt::QueuedConnection, Q_ARG(int, 100));
+        QMetaObject::invokeMethod(this, "setProgress", Qt::QueuedConnection, Q_ARG(float, 100.0));
         QMetaObject::invokeMethod(this, "transferSuccess", Qt::QueuedConnection);
     }
     // Exception handle
@@ -141,6 +142,7 @@ void Client::send_file(const file_info &FILE)
     }
     // Ensure cleanup is called on success
     Platform::cleanup_handler(FILE.buffer);
+    threadPool->stopped();
 }
 
 // handle upload request
@@ -165,6 +167,7 @@ void Client::handle_request()
         }
 
         // write file into buffer
+
         file_info FILE = Platform::read_file(filename_str, base_directory);
         if (FILE.buffer == nullptr) {
             std::cerr << "Error: Failed to deliver file to client " << strerror(errno) << std::endl;
@@ -173,6 +176,7 @@ void Client::handle_request()
         send_file(FILE);
         Platform::cleanup_handler(FILE.buffer);
     });
+    return;
 }
 
 bool Client::isConnected() const
@@ -208,11 +212,11 @@ void Client::setIsChosen(bool newFileChosen)
     emit fileChosen();
 }
 
-int Client::progress() const
+float Client::progress() const
 {
     return m_progress;
 }
-void Client::setProgress(int newProgress)
+void Client::setProgress(float newProgress)
 {
     if (m_progress == newProgress)
         return;
