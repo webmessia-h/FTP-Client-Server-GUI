@@ -140,8 +140,6 @@ void Client::send_file(const file_info &FILE)
         std::cerr << "Error sending file: " << ex.what() << std::endl;
         return;
     }
-    // Ensure cleanup is called on success
-    Platform::cleanup_handler(FILE.buffer);
     threadPool->stopped();
 }
 

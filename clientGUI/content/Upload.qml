@@ -43,8 +43,7 @@ Rectangle {
             anchors.horizontalCenter: mainWindow.horizontalCenter
             color: "#1e293b"
             wrapMode: Text.Wrap
-            text: qsTr("<h1>File succesfully saved in: \n </h1>" + "<h3>"
-                       + folderDialog.selectedFolder + "/" + fileNameInputField.text + "</h3>")
+            text: qsTr("<h1>File succesfully transfered</h1>")
 
             font.family: Constants.font.family
             horizontalAlignment: Text.AlignHCenter
