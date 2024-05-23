@@ -145,8 +145,9 @@ void Platform::write_file(const std::string filename, const char *buffer, size_t
 
 bool Platform::cleanup_handler(char *buffer)
 {
-    if (buffer != nullptr)
+    if (buffer != nullptr) {
         delete[] buffer;
+        return true;
+    }
     return false;
-    return true;
 }
