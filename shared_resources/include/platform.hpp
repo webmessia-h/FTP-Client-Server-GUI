@@ -9,10 +9,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <vector>
-struct file_info
-{
-    char *buffer;
-    size_t file_size;
+struct file_info {
+  std::ifstream file_stream;
+  size_t file_size;
 };
 
 namespace Platform {
@@ -22,9 +21,11 @@ auto format_file_size(std::uintmax_t size);
 
 std::string resolve_relative_path(const std::string &relative_path);
 
-file_info read_file(std::string filename, std::string base_directory);
+file_info read_file(const std::string &filename,
+                    const std::string &base_directory);
 
-void write_file(const std::string filename, const char *buffer, size_t buffer_size);
+bool write_file(const std::string filename, const char *buffer,
+                size_t buffer_size, std::ofstream &file);
 
 bool cleanup_handler(char *buffer);
 

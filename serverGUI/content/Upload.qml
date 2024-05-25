@@ -105,7 +105,6 @@ Rectangle {
         property string selectedItem: ""
         onAccepted: {
             if (selectedItem.length > 0) {
-                console.log("Accepted item:", selectedItem)
                 fileListDialog.close()
                 refreshButton.visible = false
                 listButton.visible = false
@@ -149,7 +148,6 @@ Rectangle {
         currentFolder: StandardPaths.writableLocation(
                            StandardPaths.HomeLocation)
         onAccepted: {
-            console.log("saved folder", folderDialog.selectedFolder)
             fileNameInputField.visible = true
             saveButton.visible = true
         }

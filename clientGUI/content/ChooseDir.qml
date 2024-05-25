@@ -34,10 +34,26 @@ Rectangle {
         onAccepted: {
             folderDialog.close()
             loader.source = "Upload.qml"
-            console.log("sent to client", folderDialog.selectedFolder)
             Backend.send_file_list(folderDialog.selectedFolder)
-            Backend.handle_request()
+        }
+      }
 
+       Loader {
+        id: loader
+        anchors.fill: parent
+        source: ""
+        onLoaded: {
+            startAcceptTimer.start()
         }
     }
+
+    Timer {
+        id: startAcceptTimer
+        interval: 2000
+        repeat: false
+        onTriggered: {
+            Backend.handle_request()
+        }
+    }
+
 }

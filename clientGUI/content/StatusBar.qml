@@ -17,7 +17,6 @@ Item {
         }
 
         onPortChanged: {
-            // Update the port text
             port.text = "<h3>Port: " + Backend.port + "</h3>"
         }
     }

@@ -111,38 +111,27 @@ int Network::accept_connection(int &server_sockfd, int &communication_sockfd) {
     return -1;
   }
 
-  const char *msg = "Connection was established";
-  send_data(communication_sockfd, msg, strlen(msg));
-   std::cout.write(msg, strlen(msg));
-   std::cout << "\n";
-   return communication_sockfd;
+  return communication_sockfd;
 }
 
 bool Network::connect_to_server(int &client_sockfd,
-                                struct sockaddr_in &server_addr,
-                                const char *ip,
-                                int port)
-{
-    //  Get server's ip and port number
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(port);
-    server_addr.sin_addr.s_addr = inet_addr(ip);
-    // Try to connect to server
-    if (connect(client_sockfd, reinterpret_cast<sockaddr *>(&server_addr), sizeof(server_addr))
-        < 0) {
-        // Failed to connect
-        std::cerr << "Error: Client failed to connect to:" << inet_ntoa(server_addr.sin_addr)
-                  << " on port: " << port << "\t" << strerror(errno) << std::endl;
-        close_socket(client_sockfd);
-        return false;
-    }
-    std::cout << "Client attempted to connect to: " << inet_ntoa(server_addr.sin_addr)
-              << " on port: " << port << std::endl;
-    char msg[27] = {0};
-    int bytes_received = receive_data(client_sockfd, &msg, sizeof(msg));
-    std::cout.write(msg, bytes_received);
-    std::cout << "\n";
-    return true;
+                                struct sockaddr_in &server_addr, const char *ip,
+                                int port) {
+  //  Get server's ip and port number
+  server_addr.sin_family = AF_INET;
+  server_addr.sin_port = htons(port);
+  server_addr.sin_addr.s_addr = inet_addr(ip);
+  // Try to connect to server
+  if (connect(client_sockfd, reinterpret_cast<sockaddr *>(&server_addr),
+              sizeof(server_addr)) < 0) {
+    // Failed to connect
+    std::cerr << "Error: Client failed to connect to:"
+              << inet_ntoa(server_addr.sin_addr) << " on port: " << port << "\t"
+              << strerror(errno) << std::endl;
+    close_socket(client_sockfd);
+    return false;
+  }
+  return true;
 }
 
 size_t Network::send_data(int socket_fd, const void *data, size_t size) {
