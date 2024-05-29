@@ -258,6 +258,7 @@ bool Server::receive_file(const QString &Qfilename) {
                             Q_ARG(float, 1.0));
   QMetaObject::invokeMethod(this, "transferSuccess", Qt::QueuedConnection);
   file.close();
+  threadPool->stopped();
   return true;
 }
 
